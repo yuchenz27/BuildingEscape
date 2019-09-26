@@ -28,26 +28,22 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	float CurrentTime = World->GetTimeSeconds();
 	if (GetTotalMassOfActorsOnPlate() > MassThreshold) {
 		OpenDoor();
-		LastDoorOpenTime = CurrentTime;
 	}
 	else {
-		if ((CurrentTime - LastDoorOpenTime) > DoorCloseDelay) {
-			CloseDoor();
-		}
+		CloseDoor();
 	}
 }
 
 void UOpenDoor::OpenDoor()
 {
-	Owner->SetActorRotation(FRotator(0.f, -OpenAngle, 0.f));
+	OnOpen.Broadcast();
 }
 
 void UOpenDoor::CloseDoor() 
 {
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
+	OnClose.Broadcast();
 }
 
 // Get the total mass of actors that overlap with the pressure plate

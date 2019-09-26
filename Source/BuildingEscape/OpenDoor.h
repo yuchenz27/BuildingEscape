@@ -9,6 +9,8 @@
 
 #define OUT
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
 {
@@ -17,6 +19,12 @@ class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UOpenDoor();
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnOpen;
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnClose;
 
 protected:
 	// Called when the game starts
@@ -27,17 +35,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	// this is a macro...
-	UPROPERTY(VisibleAnywhere)
-	float OpenAngle = 80.f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
-
-	UPROPERTY(EditAnywhere)
-	float DoorCloseDelay = 1.f;
-
-	float LastDoorOpenTime = 1000.f;
 
 	UPROPERTY(EditAnywhere)
 	float MassThreshold = 50.f;
